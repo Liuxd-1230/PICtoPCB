@@ -1,20 +1,70 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# PCB Art Simulator - Liquid Edition
 
-# Run and deploy your AI Studio app
+![PCB Art Simulator](https://upload.wikimedia.org/wikipedia/commons/b/b3/Printed_circuit_board_icon.svg)
 
-This contains everything you need to run your app locally.
+**PCB Art Simulator** 是一个专业的 Web 工具，旨在帮助 PCB 艺术家和电子工程师将普通图像转换为 PCB 制造所需的工业级分层视图。
 
-View your app in AI Studio: https://ai.studio/apps/drive/1fWEzur3uZ7UDurDBRANfmdmnIMpmAhB3
+它使用先进的颜色映射算法，将输入图像的颜色智能分配给 PCB 的物理结构层（基材、阻焊、线路、焊盘、丝印），并提供强大的交互式编辑功能。
 
-## Run Locally
+## ✨ 主要特性
 
-**Prerequisites:**  Node.js
+*   **🎨 智能色彩映射**：不仅仅是简单的阈值分割。算法结合了 RGB 距离和饱和度权重，能够准确区分“有色阻焊”（如蓝色）和“灰色金属”（如喷锡/沉金）。
+*   **🎚️ 可调灵敏度**：内置容差滑块，允许用户实时调整算法对颜色的敏感程度，完美解决浅色走线被误识别为金属的问题。
+*   **🖌️ 交互式修整**：提供画笔工具，支持在预览图上直接涂抹。您可以手动指定区域为“焊盘”、“阻焊”或“丝印”，修正 AI 的判断偏差。
+*   **📐 1:1 无损导出**：导出的图层（PNG格式）严格保持原始上传图片的像素尺寸，确保在 EDA 软件（如嘉立创 EDA、KiCad）中导入时能够完美对齐。
+*   **🧪 丰富的工艺模拟**：
+    *   支持 8 种常用阻焊颜色（绿、蓝、红、白、黑、紫、黄、哑光铜）。
+    *   支持 2 种表面处理工艺模拟（沉金 Gold、喷锡 HASL）。
+*   **💎 现代化 UI**：采用 "Liquid" 风格的 Glassmorphism（毛玻璃）界面设计，提供沉浸式的使用体验。
 
+## 🛠️ 技术栈
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+*   **React 19**: 构建用户界面的核心库。
+*   **TypeScript**:以此保证代码的类型安全和健壮性。
+*   **Tailwind CSS**: 处理所有样式和响应式布局。
+*   **HTML5 Canvas**: 用于高性能的像素级图像处理和实时渲染。
+*   **Lucide React**: 现代化的图标库。
+
+## 🚀 快速开始
+
+### 1. 启动项目
+
+```bash
+npm install
+npm run dev
+```
+
+### 2. 使用流程
+
+1.  **上传图片**：点击左侧侧边栏的“上传原图”，选择您的设计稿（建议使用清晰的位图）。
+2.  **设置工艺**：
+    *   选择 **阻焊颜色**（如绿色、蓝色）。
+    *   选择 **表面处理**（沉金或喷锡）。
+3.  **调整算法**：
+    *   如果发现识别不准确（例如浅蓝色被识别成银色），请向左拖动“颜色识别容差”滑块（调低灵敏度）。
+    *   如果希望更多相近色被包含进来，向右拖动滑块。
+4.  **手动修整**：
+    *   在中间的主预览区，点击上方的画笔工具。
+    *   选择要绘制的层（如“焊盘”）。
+    *   调整画笔大小，直接在画布上涂抹以强制修改该区域的属性。
+5.  **导出图层**：
+    *   在右侧（或下方）的图层预览卡片中，点击下载按钮。
+    *   您将获得分离的 `Silkscreen`（丝印）、`Solder Mask`（阻焊开窗）、`Top Layer`（线路层）图片。
+
+## 💡 EDA 导入指南 (以嘉立创 EDA 为例)
+
+为了确保 PCB 艺术画在生产时效果符合预期：
+
+1.  从本工具分别下载 **丝印层**、**阻焊层** 和 **线路层** 的图片。
+2.  在 EDA 软件中打开您的 PCB 工程。
+3.  使用“导入图片”功能。
+4.  **关键步骤**：导入时，确保设置的 **宽/高尺寸** 对所有图层保持一致（建议根据原图比例锁定纵横比）。
+5.  由于本工具导出的图片像素尺寸完全一致，只要在 EDA 中设置相同的物理尺寸（毫米），所有图层将自动完美重叠，不会错位。
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进算法或增加新功能！
+
+## 📄 许可证
+
+MIT License
